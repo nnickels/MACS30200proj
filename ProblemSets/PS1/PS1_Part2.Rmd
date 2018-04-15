@@ -1,0 +1,29 @@
+---
+title: "PS1_Part2"
+author: "Nora Nickels"
+date: "4/15/2018"
+output: pdf_document
+---
+
+# Problem Set 1
+## Part 2: Critique a computational research paper
+
+### State the research question of your assigned paper.
+
+In this research paper, the authors are asking the following research questions: Are demographic differences in measures of political polarization consistent with the theory that internet and social media play an important role in these measures? Specifically, how do trends in policital polarization relate to respondents' tendencies to obtain news or information online or from social media?
+
+### What data did the paper use?
+
+The authors primary sources of the data included the American National Election Studies', or ANES. Specifically, they include the 1948-2012 Time Series Cumulative, the 2008 Time Series Study, and the 2012 Time Series Study data sets. The describe the ANES as being a, "nationally represetative, face-to-face survey of the voting-age population that is conducted in both pre- and post- election rounds and contains numerous demographic variables and political measures" (Boxell et. al, 2017). 
+
+### What theory did the paper reference in order to interpret the data? (Note: it is possible that the paper has no reference to theory.)
+
+This paper references several different topics of theory to interpret the data.
+
+### Was your assigned paper a descriptive study, an identification exercise, a numerical solution to system of equations study, or some combination of the three? (These are the three classifications we discussed in class.)
+
+### What computational methods did this paper use to answer the research question? What was their result or answer to the question?
+
+### Think of yourself as an academic referee. Give two suggestions to the author(s) of your assigned paper of things the authors might do to improve their results or strengthen their evidence for the answer to the question.
+
+### Reference

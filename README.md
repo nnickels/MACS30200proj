@@ -1,7 +1,7 @@
 # MACS30200proj  
 _________________________
 ### Nora Nickels
-**Repository for Perspectives of Computational Research  **
+**Repository for Perspectives of Computational Research**
 
 This repository contains documents related to the research project completed in MACSS 30200, Perspectives of Computational Research in Spring 2018.
 

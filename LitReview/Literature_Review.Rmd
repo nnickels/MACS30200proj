@@ -1,0 +1,53 @@
+---
+title: "A comparative digital survey investigation of the construct validity of the Trait Anxiety Inventory within a UChicago community sample and an MTurk sample"  
+author: "Nora Nickels"
+date: "4/18/2018"
+header-includes:
+    - \usepackage{setspace}
+output: pdf_document
+bibliography: references.bib
+---
+
+### Research Questions: 
+* Do distributions of trait anxiety scores differ in samples acquired from a University of Chicago community vs. the Amazon Mechanial Turk community?
+* How strong is the construct validity of the Trait Anxiety Inventory in a sample drawn from these two populations; specifically, do setting and mood relate to trait anxiety responses of UChicago or MTurk community members when the T.A.I. is completed outside of a controlled laboratory setting?
+
+\doublespacing
+
+# Literature Review
+
+In psychological and biological research, emotions are measured both in terms of acute states of arousal and in terms of individual differences in the propensity to experience that emotion. Scientists define the difference between these two elements of emotional measurement as state and trait measures of emotions. For example, anxiety as an emotion can be generally defined as heightened feelings of tension, apprehension, and worry, in combination with an aroused physiological state [@spielberger2010state]. It is particularly important to distinguish between state and trait for anxiety, as higher trait anxiety, or higher individual proneness to experience anxiety, could affect the way an individual reacts behaviorally in both acute and long term situations. Trait anxiety can be defined as an individual measure of intensity and frequency of experienced anxiety, which involves these feelings of apprehension and heightened response of the autonomic nervous system [@spielberger1966theory]. Importantly, train anxiety is seen as a relatively *stable* trait, and individuals who have higher trait anxiety tend to perceive situations as more dangerous or stressful over time [@spielberger1966theory].
+
+The State-Trait Anxiety Inventory, or STAI, is a long-standing measure that uses two scales to report these two measures (state anxiety and trait anxiety)[@spielberger1989state]. The STAI is designed as a self-report measure, with items that map specifically to the two factors of anxiety. The STAI trait scale consists of twenty statements that have individuals rate, on a four-point Likert scale, different statements about how they feel generally (e.g., "I feel nervous and restless.") Both the state and trait scales of the STAI are long-stnading, frequently used scales in psychology, and theoretically, the inventory has been shown to measure response to experimental manipulation in meaningful ways [@chapman1977determinants]. Further, the two subscales have been shown to correlate with other measures of anxiety that is consistent the content of measure [@bieling1998state]. 
+
+Importantly, retest correlations of the iventory have shown strong reliability, and re-test coefficients for the trait scale have shown to be even higher for those items that measure the state scale [@spielberger2010state; @barnes2002reliability]. The STAI is reported to have high validity, with concurrent validity with other anxiety questionnaires reported as ranging from 0.73 - 0.85 [@bieling1998state]. However, some researchers argue that a general, yet incorrect, implication that is attached to re-test reliability is that of which states that once an instrument is found to be reliable, its reliability does or cannot change [@barnes2002reliability]. If reliability is simply a property of scores from a specific sample of survey-takers, as opposed to being a property of the test itself, then reliability of a measure can be affected by any source of variability that also affects the scores (e.g., demographics in a particular sample, such as gender, age. motivation. etc.)[@barnes2002reliability]. Therefore, although re-test reliability and concurrent measures of validity are incredibly important, considering the specific sample involved in one's study is crucial in discussion of the interpretation of one's results. 
+
+In my work, I share equal concern in that my specific sample is taken from a community whose specific demographics may affect the distribution of anxiety scores. Like most psychology study populations, our work frequently involves participant samples drawn from a university setting. Specifically, the University of Chicago ranks as one of the top undergraduate research institutions in the U.S., and is often viewed as a competitive and stressful environment. Beyond the concern that many research institutions have about their willing research participants coming from a primarily Western, educated, industrialized, rich, and democractic (WEIRD) population [@jones2010weird], our lab also deals with the concern of recruiting willing participants from a sample that may not only have higher than usual scores of trait anxiety, but also have rapidly fluctuating rates of both state and trait anxiety throughout their academic experience.
+
+To control some of these concerns of validity and reliability, researchers often use a controlled, laboratory setting, to remove extraneous effects of the environment. For example, our laboratory has research participants spend about twenty-five minutes in the laboratory before first saliva samples are taken, to reduce the potential for effects outside of the lab to result in hormonal concentrations to do not represent true baseline. In this way, we also administer many psychological surveys in the lab as well. Howevers, due to both time and monetary restraints, we occasionally adminster *trait* based questionnaires digitally in advance of the lab session, as trait based questionaires theoretically measure relatively stable, trait personality measures. 
+
+Digital surveys and digital ethnography methods are seen as new technologies for social research that allow scientests to avoid more costly research methods, to easily alter questionnaires to access different cultural groups, to access more hard to reach populations, to collect higher response dates, and to consolidate data more quickly and efficiently [@murthy2008digital]. In the case of administering our surveys digitally outside of the lab, we save both temporal and monetary costs, yet run the risk of extraneous factors of the environment to interact with demographics of our sample and therefore affects the trait anxiety scores of our participants. If certain factors environmentally outside of a controlled laboratory could affect trait anxiety score, then we experience a trade off of validity when our survey is administered digitally.
+
+Our sample taken from the University of Chicago community is not the only sample from which digital survey data is drawn. Digitally web-based data collection is a relatively new methods that contains the primary elements needed to conduct social research, while benefitting from the same aspects discussed above. 
+
+## Outline
+
+### Trait bases questionnaires, STAI
+
+### Saving time and money, digital questionnaires
+
+### digital questionnaires vs in person
+
+### digital population crowdsourced vs in person
+
+### MTurk
+
+### UChicago vs. Mturk
+
+### Connect to RQs
+
+
+\pagebreak  
+\singlespacing  
+
+# References

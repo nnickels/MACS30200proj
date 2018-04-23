@@ -11,6 +11,7 @@ As assignments for the project are completed, please use the below links to acce
 * [Proposal Slides](Proposal/NickelsProposal.pdf)  
 
 ### Literature Review
+* [Literature Review](LitReview/Literature_Review.pdf)
 
 ### Methods / Initial Results
 

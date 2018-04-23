@@ -1,7 +1,7 @@
 ---
 title: "A comparative digital survey investigation of the construct validity of the Trait Anxiety Inventory within a UChicago community sample and an MTurk sample"  
 author: "Nora Nickels"
-date: "4/18/2018"
+date: "4/23/2018"
 header-includes:
     - \usepackage{setspace}
 output: pdf_document
@@ -28,23 +28,15 @@ To control some of these concerns of validity and reliability, researchers often
 
 Digital surveys and digital ethnography methods are seen as new technologies for social research that allow scientests to avoid more costly research methods, to easily alter questionnaires to access different cultural groups, to access more hard to reach populations, to collect higher response dates, and to consolidate data more quickly and efficiently [@murthy2008digital]. In the case of administering our surveys digitally outside of the lab, we save both temporal and monetary costs, yet run the risk of extraneous factors of the environment to interact with demographics of our sample and therefore affects the trait anxiety scores of our participants. If certain factors environmentally outside of a controlled laboratory could affect trait anxiety score, then we experience a trade off of validity when our survey is administered digitally.
 
-Our sample taken from the University of Chicago community is not the only sample from which digital survey data is drawn. Digitally web-based data collection is a relatively new methods that contains the primary elements needed to conduct social research, while benefitting from the same aspects discussed above. 
+Obviously, our sample taken from the University of Chicago community is not the only sample from which digital survey data is drawn. Digitally web-based data collection is a relatively new method that contains the primary elements needed to conduct social research, while benefitting from the same aspects discussed above. In fact, despite the concerns above, some researchers have argued that survey data that is digital collected are in fact preferred to data that has been collected in person. For example, Castler et al. compared data that had been collected in the lab and also online, and found that the test results themselves resulted in equivalent, high-quality data for both groups and that the data collected digitally was in fact more socioeconomically and ethnically diverse [-@casler2013separate]. Further, Hauser and Schwarz found that data collected using Amazon's Mechanical Turk (MTurk) showed higher rates of participant attentiveness (measured using attentiveness an instructional manipulation check) when compared to data collected from college students [-@hauser2016attentive]. 
 
-## Outline
+On the other hand, other research that compares digital populations with in-person samples have found differences that may be less beneficial, and that even if both samples are collected digitally, the samples themselves may compare and contrast in interesting ways, based on the population from which the digital survey sample is taken. For example, Goodman and colleagues compared MTurk participants with student samples on multiple measures, including attentiveness, personality, and certain decision-making biases [-@goodman2013data]. The authors found that MTurk participants were actually less attentive and had different personality profiles (e.g., less extroverted, less emotionally stable) when compared to a student population, but were similar in terms of how they value money and time and in terms of their risk aversion [@goodman2013data]. Although digital population
 
-### Trait bases questionnaires, STAI
+Clearly then, the results of this line of research has been mixed thus far. What we can confirm is that much of the literature focusing on the strengths and weaknesses of digital data has focused specifically on digital populations, where data can be crowdsourced or collected in a completely digital way. Conducting psychology research using crowdsourced data has mainly revolved around the Amazon Mechanical Turk (MTurk) platform, based on its popularity and ease of access.  MTurk provides a platform to oursource small tasks (referred to as HITS, or human intelligence tasks) to a workforce collected globally that is made up of workers [@behrend2011viability]. The MTurk platform has been investigated to confirm that it provides an efficient and reliable alternative from the university participant population [@behrend2011viability; @rand2012promise]. 
 
-### Saving time and money, digital questionnaires
+In particular, a solid amount of work has been done investigating the specific MTurk population
 
-### digital questionnaires vs in person
-
-### digital population crowdsourced vs in person
-
-### MTurk
-
-### UChicago vs. Mturk
-
-### Connect to RQs
+Based on this literature, our lab continues to have standing concerns based on the comparison between our sample population, drawn from the UChicago community and containing many undergraduate college students, and a sample population coming from the MTurk commmunity. Past research has discussed the pros and cons of data collection from in-person vs. digital methodology, and it is critical to know the specific descriptive statistics of a specific sampling frame and how these descriptions differ from other sample populations. This study seeks to answer, specifically, how the TAI scores of a sample from a UChicago community compare to this collected from a digitally crowdsourced sample from Amazon Mechanical Turk. These comparisons in scores could be tied to differences in specific anxiety traits between the two samples, or differences in diversity amongst the groups. Further, this study will look into the construct validity of both the UChicago sample and the MTurk sample, by focusing on how extraneous factors, such as setting and mood, affect the responses of the TAI for both a UChicago based sample and an MTurk collected sample. The focus on these factors will add to the literature surrounding how in-person vs. digitally collected data compare.
 
 
 \pagebreak  

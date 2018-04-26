@@ -26,9 +26,9 @@ As assignments for the project are completed, please use the below links to acce
 [PS1, Part 2](ProblemSets/PS1/PS1_Part2.pdf)  
 
 * **Problem Set 2**  
-[PS2, Part 1](ProblemSets/PS2_Part1_KD_Estimation.ipynb)
-[PS2, Part 2](ProblemSets/PS2_Part2_Interaction.md)  
-PS2, Part 3  
+[PS2, Part 1](ProblemSets/PS2_Part1_KD_Estimation.ipynb)  
+[PS2, Part 2](ProblemSets/PS2_Part2_Interaction.md)   
+PS2, Part 3   
 
 * **Problem Set 3**  
 

@@ -1,0 +1,47 @@
+---
+title: "PS2_Part2_Interaction"
+author: "Nora Nickels"
+date: "4/26/2018"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem Set 2
+
+## Interactions Terms
+
+```{r data}
+# Load libraries
+
+# Load data
+
+```
+
+### Linear Regression Model
+
+```{r LRM}
+
+
+```
+
+### 2A: Evaluate the marginal effect of age on Joe Biden thermometer rating, conditional on education
+
+```{r age}
+
+
+```
+
+### 2B: Evaluate the marginal effect of education on Joe Biden thermometer rating, condition on age
+
+You can also embed plots, for example:
+
+```{r education}
+
+
+```
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

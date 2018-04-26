@@ -17,10 +17,18 @@ Interactions Terms
 
 ### Linear Regression Model
 
+``` r
+# LRM here
+```
+
 ### 2A: Evaluate the marginal effect of age on Joe Biden thermometer rating, conditional on education
+
+``` r
+# marginal effect 
+```
 
 ### 2B: Evaluate the marginal effect of education on Joe Biden thermometer rating, condition on age
 
-You can also embed plots, for example:
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+``` r
+# marginal effect
+```

@@ -23,25 +23,21 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Linear Regression Model
 
 ```{r LRM}
-
+# LRM here
 
 ```
 
 ### 2A: Evaluate the marginal effect of age on Joe Biden thermometer rating, conditional on education
 
 ```{r age}
-
+# marginal effect 
 
 ```
 
 ### 2B: Evaluate the marginal effect of education on Joe Biden thermometer rating, condition on age
 
-You can also embed plots, for example:
-
 ```{r education}
-
+# marginal effect
 
 ```
 
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

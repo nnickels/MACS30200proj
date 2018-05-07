@@ -14,6 +14,7 @@ As assignments for the project are completed, please use the below links to acce
 * [Literature Review](LitReview/Literature_Review.pdf)
 
 ### Methods / Initial Results
+* [Methods and Initial Results](MethodsResults/Methods_Results.pdf)
 
 ### Poster
 

@@ -1,0 +1,93 @@
+---
+title: "Methods and Initial Results"
+author: "Nora Nickels"
+date: "5/9/2018"
+header-includes:
+    - \usepackage{setspace}
+    - \usepackage{booktabs}
+    - \usepackage{longtable}
+    - \usepackage{array}
+    - \usepackage{multirow}
+    - \usepackage[table]{xcolor}
+    - \usepackage{wrapfig}
+    - \usepackage{float}
+    - \usepackage{colortbl}
+    - \usepackage{pdflscape}
+    - \usepackage{tabu}
+    - \usepackage{threeparttable}
+    - \usepackage{threeparttablex}
+    - \usepackage[normalem]{ulem}
+    - \usepackage{makecell}
+output: pdf_document
+---
+\doublespacing
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+options(knitr.table.format = "latex")
+
+library(tidyverse)
+library(ggplot2)
+library(knitr) 
+library(modelr)
+library(broom)
+library(kableExtra)
+
+set.seed(1234)
+theme_set(theme_minimal())
+
+macss <- read_csv('macss.csv')
+desc1 <- read_csv('macss_desc_1.csv')
+desc2 <- read_csv('macss_desc_2.csv')
+```
+
+# Methods
+
+## Theoretical Model
+* Define the model (but don't reproduce the literature review - you'll link these together in the final paper)
+
+### Variables
+* Map variables to theoretical constructs
+
+## Data
+
+### Data collection
+* Describe the data and how to obtain it
+* Describe data collection procedures
+
+### Participants
+
+### Summary Statistics
+* Summary statistics for key variables
+
+```{r desc_1}
+
+kable(desc1, format = "latex", caption = "Demographics [note]", booktabs = T) %>%
+  kable_styling(latex_options = "striped") %>%
+  column_spec(5, width = "5em") %>%
+  column_spec(6, width = "5em") %>%
+  column_spec(7, width = "5em") %>%
+  add_footnote(c("Caption Notes"))
+
+```
+
+```{r desc_2}
+
+kable(desc2, format = "latex", 
+      caption = "Descriptive Statistics of TAI and PANAS Inventories [note]",
+      booktabs = T) %>%
+  kable_styling(latex_options = "striped") %>%
+  column_spec(5, width = "5em") %>%
+  column_spec(6, width = "5em") %>%
+  column_spec(7, width = "5em") %>%
+  add_footnote(c("Caption Notes"))
+
+```
+
+
+### Data Analysis
+* Define the methods used to analyze the data
+
+# Results
+* Present initial (tentative results)
+* Use tables and figures as appropriate

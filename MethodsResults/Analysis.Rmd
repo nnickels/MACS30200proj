@@ -1,0 +1,83 @@
+---
+title: "Analysis"
+author: "Nora Nickels"
+date: "5/7/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+
+library(tidyverse)
+library(ggplot2)
+library(knitr) 
+library(modelr)
+library(broom)
+
+set.seed(1234)
+theme_set(theme_minimal())
+
+macss <- read_csv('MethodsResults/macss.csv')
+head(macss)
+
+```
+
+
+```{r gender_count}
+
+macss %>%
+  count(Gender) %>%
+  kable(caption = "Counts of Gender)",
+        col.names = c("Gender", "Number of Participants"))
+```
+```{r TAI_Desc}
+
+macss %>%
+  ggplot() +
+    geom_histogram(aes(TAI_TOTAL), bins = 20) +
+    ggtitle("Distribution of TAI Among Participants") +
+    xlab("TAI") +
+    ylab("Number of Participants")
+
+macss %>%
+  ggplot(aes(x = Group, y = TAI_TOTAL))+
+    geom_boxplot()+
+    ylab("TAI Score")+
+    xlab("Participant Group")+
+    ggtitle("Average Participant TAI Score by Group")
+
+
+macss %>%
+  ggplot(aes(x = Group, y = Age))+
+    geom_boxplot()+
+    ylab("TAI Score")+
+    xlab("Participant Group")+
+    ggtitle("Average Participant TAI Score by Group")
+
+
+macss %>%
+  group_by(Group) %>%
+  summarize(ave_TAI = mean(TAI_TOTAL)) %>%
+  kable (caption = "Average Trait Anxiety for UC vs. MTurk Participants",
+        col.names = c("Group",
+                      "Average Trait Anxiety"))
+
+t.test(macss$TAI_TOTAL ~ macss$Group)
+
+```
+
+
+``` {r models}
+
+macss_gender <- lm(TAI_TOTAL ~ Gender, data = macss)
+tidy(macss_gender)
+
+biden_gender <- lm(biden ~ female, data = biden)
+tidy(biden_gender)
+
+```
+

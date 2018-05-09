@@ -23,7 +23,7 @@ output: pdf_document
 \doublespacing
 ```{r setup, include=FALSE}
 
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width=8, fig.height=6)
 options(knitr.table.format = "latex")
 
 library(tidyverse)
@@ -104,7 +104,12 @@ To compare mean TAI scores between UChicago and MTurk participants, we will use 
 
 # Initial Results
 
+Our results seek to answer the following research questions:
 
+* Do distributions of trait anxiety scores differ in samples acquired from a University of Chicago community vs. the Amazon Mechanial Turk community?
+* How strong is the construct validity of the Trait Anxiety Inventory in a sample drawn from these two populations; specifically, do setting and mood relate to trait anxiety responses of UChicago or MTurk community members when the T.A.I. is completed outside of a controlled laboratory setting?
+
+In comparing average Trait Anxiety Scores between UChicago (M =  45.68) and MTurk samples (M = 45.41), we found no difference in TAI Scores between the two groups (t = -0.155, p-value = 0.877). Figure 1 shows the average TAI score between groups. 
 
 ```{r compare_groups}
 
@@ -117,6 +122,7 @@ macss %>%
 
 ```
 
+A multiple linear regression was calculated to predict TAI scores based on Group, as well as predictors of positive acute mood, negative acute mood, setting, age, income level, gender, and previous research participant experience. Table 3 presents the regression model results. A signification regression equation was found, such that positive acute mood, negative acute mood, and past research participation were all significant predictor of TAI scores, while controlling for setting, age, income, and gender. Figure 2 presents the regression results as the significance and 95% confidence intervals of the coefficient estimates for each of the predictors. Positive acute mood is a negative predictor of TAI score. Negative acute mood is a positive predicor of TAI score. Past research participant experience is a slight positive predictor of TAI score. Group (U of C vs. MTurk) is a slight negative predictor of TAI score, such that, controlling for all other model predictors, being a U of C student increases TAI score by 3.15. 
 
 ```{r model_table}
 
@@ -133,6 +139,7 @@ kable(tidy_macss, format = "latex",
   column_spec(7, width = "5em")
 
 ```
+
 
 
 

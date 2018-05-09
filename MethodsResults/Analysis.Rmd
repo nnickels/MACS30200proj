@@ -17,6 +17,7 @@ library(ggplot2)
 library(knitr) 
 library(modelr)
 library(broom)
+library(kableExtra)
 
 set.seed(1234)
 theme_set(theme_minimal())
@@ -33,7 +34,15 @@ macss %>%
   count(Gender) %>%
   kable(caption = "Counts of Gender)",
         col.names = c("Gender", "Number of Participants"))
+
+macss %>%
+  group_by(Group) %>%
+  count(Research) %>%
+  kable(caption = "Counts of Gender)",
+        col.names = c("Gender", "Number of Participants"))
 ```
+
+
 ```{r TAI_Desc}
 
 macss %>%
@@ -68,6 +77,92 @@ macss %>%
 
 t.test(macss$TAI_TOTAL ~ macss$Group)
 
+macss %>%
+  summarize(ave_age = mean(Age))
+
+macss %>%
+  summarize(mode_inc = mode(Income))
+
+
+macss %>%
+  group_by(Group) %>%
+  count(Income) %>%
+  filter(!is.na(Income)) %>%
+  arrange(-n)
+
+
+macss %>%
+  group_by(Group) %>%
+  count(Setting) %>%
+  filter(!is.na(Setting)) %>%
+  arrange(-n)
+
+macss %>%
+  group_by(Group) %>%
+  summarize(ave_TAI = mean(TAI_TOTAL))
+
+macss %>%
+  filter(!is.na(PANAS_P_TOTAL)) %>%
+  group_by(Group) %>%
+  summarize(mean_panasP = mean(PANAS_P_TOTAL))
+
+macss %>%
+  filter(!is.na(PANAS_P_TOTAL)) %>%
+  summarize(mean_panasP = mean(PANAS_P_TOTAL))
+
+macss %>%
+  summarize(max_TAI = sd(TAI_TOTAL))
+
+macss %>%
+  filter(!is.na(PANAS_P_TOTAL)) %>%
+  group_by(Group) %>%
+  summarize(sd_panasP = sd(PANAS_P_TOTAL))
+
+macss %>%
+  filter(!is.na(PANAS_P_TOTAL)) %>%
+  summarize(sd_panasP = sd(PANAS_P_TOTAL))
+
+macss %>%
+  filter(!is.na(PANAS_N_TOTAL)) %>%
+  group_by(Group) %>%
+  summarize(mean_panasP = mean(PANAS_N_TOTAL))
+
+macss %>%
+  filter(!is.na(PANAS_N_TOTAL)) %>%
+  summarize(sd_panasN = mean(PANAS_N_TOTAL))
+
+macss %>%
+  filter(!is.na(PANAS_N_TOTAL)) %>%
+  group_by(Group) %>%
+  summarize(sd_panasN = sd(PANAS_N_TOTAL))
+
+macss %>%
+  filter(!is.na(PANAS_N_TOTAL)) %>%
+  summarize(sd_panasN = sd(PANAS_N_TOTAL))
+
+macss %>%
+  filter(!is.na(PANAS_N_TOTAL)) %>%
+  group_by(Group) %>%
+  summarize(min_panasN = min(PANAS_N_TOTAL))
+
+macss %>%
+  filter(!is.na(PANAS_N_TOTAL)) %>%
+  group_by(Group) %>%
+  summarize(max_panasN = max(PANAS_N_TOTAL))
+
+macss %>%
+  filter(!is.na(PANAS_P_TOTAL)) %>%
+  group_by(Group) %>%
+  summarize(max_panasP = max(PANAS_P_TOTAL))
+
+macss %>%
+  filter(!is.na(PANAS_P_TOTAL)) %>%
+  group_by(Group) %>%
+  summarize(min_panasP = min(PANAS_P_TOTAL))
+
+macss %>%
+  filter(!is.na(PANAS_N_TOTAL)) %>%
+  summarize(spanasN = sd(PANAS_N_TOTAL))
 ```
 
 
@@ -76,8 +171,41 @@ t.test(macss$TAI_TOTAL ~ macss$Group)
 macss_gender <- lm(TAI_TOTAL ~ Gender, data = macss)
 tidy(macss_gender)
 
+macss_group <- lm(TAI_TOTAL ~ Group, data = macss)
+tidy(macss_group)
+
 biden_gender <- lm(biden ~ female, data = biden)
 tidy(biden_gender)
 
+macss_full <- lm(TAI_TOTAL ~ Group + PANAS_P_TOTAL + PANAS_N_TOTAL + Setting + Age + Income + Gender + Research, data = macss)
+tidy(macss_full)
+tidy_macss <- tidy(macss_full)
+write.csv(tidy_macss, "tidy_macss.csv")
+
+dwplot(macss_full) +
+     xlab("Coefficient Estimate") + 
+     ylab("") +
+     geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
+     ggtitle("Predicting Trait Anxiety Score") +
+     theme(plot.title = element_text(face="bold"))
+
+dwplot(macss_full) +
+     geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
+     ggtitle("Predicting Trait Anxiety Score") +
+     theme(plot.title = element_text(face="bold"))
 ```
 
+```{r table}
+
+
+desc1 <- read_csv('macss_desc_1.csv')
+
+options(knitr.table.format = "latex")
+
+kable(desc1, format = "latex", booktabs = T) %>%
+  kable_styling(latex_options = "striped")
+
+
+
+
+```

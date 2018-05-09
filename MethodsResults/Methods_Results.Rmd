@@ -32,6 +32,8 @@ library(knitr)
 library(modelr)
 library(broom)
 library(kableExtra)
+library(dotwhisker)
+library(dplyr)
 
 set.seed(1234)
 theme_set(theme_minimal())
@@ -44,21 +46,32 @@ desc2 <- read_csv('macss_desc_2.csv')
 # Methods
 
 ## Theoretical Model
-* Define the model (but don't reproduce the literature review - you'll link these together in the final paper)
+
+Our lab's research explores stable personality, emotional, and psychological traits that map on to biological and behavioral responses. In this study, we are focused on the distribution of a stable trait (trait anxiety) in our population, how this distribution differs from other samples, and how the scores that lead to this distribution are impacted by extraneous factors. This study seeks to answer, specifically, how the TAI scores of a sample from a UChicago community compare to this collected from a digitally crowdsourced sample from Amazon Mechanical Turk. This study will look into the construct validity of both the UChicago sample and the MTurk sample, by focusing on how extraneous factors, such as setting and mood, affect the responses of the TAI for both a UChicago based sample and an MTurk collected sample. 
+
+To do so, we will use a multiple linear regression model that will identify key variables that predict trait anxiety scores in our digital survey participants. The survey explores our main predictor variable of community or group (whether you were recruited from a UChicago population or an MTurk population), along with a variety of demographic factors that seek to control for what else may predict TAI scores. These potential predictors of our model will include age, gender, income, research participation experience, where the survey was taken (physical setting), and positive and negative acute mood. 
 
 ### Variables
-* Map variables to theoretical constructs
+
+To measures trait anxiey, we used the trait scale of the State Trait Anxiety Inventory. The STAI trait scale consists of twenty statements that have individuals rate, on a four-point Likert scale, different statements about how they feel generally (e.g., "I feel nervous and restless."). The items were randomized for each participant. To measure acute positive and negative mood of participants, we will use the Positive and Negative Affect Schedule (PANAS; Watson et al., 1988). The PANAS is a psychometric scale that measures positive and negative affect using words that describe feelings and emotions on a Likert scale of 1 (not at all) to 5 (very much). A multitude of studies have been used to confirm the reliability and validity of the PANAS. We will use the PANAS scales to measure how acute positive or negative moods affect the trait anxiety scores of the participants. PANAS measures will be collected after the TAI is administered, so as not to prime participants' with the current mood and thus affect the TAI scores. The PANAS items were also randomized for each participant.
+
+To measure the setting of where the survey was taken, we included items asking about type of setting, the amount of people present at the time, and whether the participant was interacting wtih anyone else at the time. To measure demographics variables, we included items asking questions about age, gender, occupation, income level, relationship status, gender, and whether or not the participant has taken part in a research study prior to this one. 
 
 ## Data
 
-### Data collection
-* Describe the data and how to obtain it
-* Describe data collection procedures
+### Data collection and Participants
 
-### Participants
+Data from this study is collected from two different populations. One sample was collected from a population of MTurk workers, and one sample was collected from the UChicago community. Both groups completed the same survey that was administered via Qualtrics. The Qualtrics survey was anonymous, and included measures in the following order: Trait Anxiety Inventory, PANAS, questions regarding setting, and finally demographic variables. 
+
+We surveyed 104 MTurk workers on Thursday, May 3rd of 2018. The survey was advertised as taking about 5 minutes and we paid paid respondents 15 cents each. Because we wish to benchmark MTurk against a sample of University of Chicago community members, we resitrcited the survey to individuals classified as 18 or older and living in the United States. Further, we excluded individuals with approval ratings below 90% on previous MTurk tasks. 
+
+We surveyed 96 University of Chicago community members on Thursday, May 3rd of 2018. The survey was advertised through several platforms that are exclusively accessbily to individuals with a University of Chicago certified email address. These platforms include: UChicago Marketplace; UChicago private Facebook groups; UChicago private listservs; and UChicago current student class email lists (approved accessed by individual course instructors).
+
+The data is accessible within our github repository: https://github.com/nnickels/MACS30200proj.
 
 ### Summary Statistics
-* Summary statistics for key variables
+
+Table 1 presents key summary statistics of demographics amongst both the UChicago and MTurk groups, as well as overall. Both samples included more females than males, with the UChicago sample having 69% female participants. The mean age of MTurk workers (37.3 years) was significantly greater than that of the UChicago participants (22.8 years), and MTurkers were more likely to be married than UChicago students (34.6% married vs. 5.2% married). Both UChicago students and MTurkers most frequent response in terms of setting where the survey was completed was at home or in their apartment. Table 2 presents key summary statistics of TAI and PANAS scores among both the UChicago and MTurk groups, as well as overall. 
 
 ```{r desc_1}
 
@@ -67,7 +80,7 @@ kable(desc1, format = "latex", caption = "Demographics [note]", booktabs = T) %>
   column_spec(5, width = "5em") %>%
   column_spec(6, width = "5em") %>%
   column_spec(7, width = "5em") %>%
-  add_footnote(c("Caption Notes"))
+  add_footnote(c("Prior research experience defined as having answered yes to participanting in a research study previously."))
 
 ```
 
@@ -80,14 +93,57 @@ kable(desc2, format = "latex",
   column_spec(5, width = "5em") %>%
   column_spec(6, width = "5em") %>%
   column_spec(7, width = "5em") %>%
-  add_footnote(c("Caption Notes"))
+  add_footnote(c("Positive and Negative mood scores assessed with the positive and negative scales of the PANAS. TAI Total scores calculated from the Trait scale of the STAI."))
 
 ```
 
 
 ### Data Analysis
-* Define the methods used to analyze the data
 
-# Results
-* Present initial (tentative results)
-* Use tables and figures as appropriate
+To compare mean TAI scores between UChicago and MTurk participants, we will use a t-test of mean TAI scores between the groups. To analyze the effects of group (UChicago vs. MTurk) on TAI scores while controlling for demographics and other potential extraneous factors, we use a multiple linear regression model with TAI score as our dependent variable. 
+
+# Initial Results
+
+
+
+```{r compare_groups}
+
+macss %>%
+  ggplot(aes(x = Group, y = TAI_TOTAL))+
+    geom_boxplot()+
+    ylab("TAI Score")+
+    xlab("Participant Group")+
+    ggtitle("Figure 1: Average Participant TAI Score by Group")
+
+```
+
+
+```{r model_table}
+
+macss_full <- lm(TAI_TOTAL ~ Group + PANAS_P_TOTAL + PANAS_N_TOTAL + Setting + Age + Income + Gender + Research, data = macss)
+tidy_macss <- tidy(macss_full)
+
+kable(tidy_macss, format = "latex", 
+      caption = "Regression Model Results",
+      booktabs = T,
+      longtable = T) %>%
+  kable_styling(latex_options = "striped", "hold_position") %>%
+  column_spec(5, width = "5em") %>%
+  column_spec(6, width = "5em") %>%
+  column_spec(7, width = "5em")
+
+```
+
+
+
+```{r model_plot}
+
+macss_full <- lm(TAI_TOTAL ~ Group + PANAS_P_TOTAL + PANAS_N_TOTAL + Setting + Age + Income + Gender + Research, data = macss)
+
+dwplot(macss_full) +
+     xlab("Coefficient Estimate") + 
+     ylab("") +
+     geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
+     ggtitle("Figure 2: Predicting Trait Anxiety Score")
+
+```

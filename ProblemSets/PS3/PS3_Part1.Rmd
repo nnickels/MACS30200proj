@@ -1,0 +1,134 @@
+---
+title: "PS3_Part1"
+author: "Nora Nickels"
+date: "5/13/2018"
+output: github_document
+---
+
+# Problem Set 3
+
+## Part 1: Image Classification
+
+### Set Seed and Load the MNIST Dataset
+
+Load the MNIST dataset
+Preprocess the data by converting the data to a 2D tensor with individual values between 0 and 1
+Randomly split the training data into 50,000 training observations and 10,000 validation observations
+
+```{r load}
+
+set.seed(1234)
+
+library(keras)
+
+# Load the MNIST dataset
+
+mnist <- dataset_mnist()
+train_images <- mnist$train$x
+train_labels <- mnist$train$y
+test_images <- mnist$test$x
+test_labels <- mnist$test$y
+
+str(train_images)
+str(train_labels)
+str(test_images)
+str(test_labels)
+
+# Preprocess the data by converting the data to a 2D tensor with individual values between 0 and 1
+# Randomly split the training data into 50,000 training observations and 10,000 validation observations
+
+train_images <- array_reshape(train_images, c(50000, 28 * 28))
+train_images <- train_images / 255
+
+test_images <- array_reshape(test_images, c(10000, 28 * 28))
+test_images <- test_images / 255
+
+train_labels <- to_categorical(train_labels)
+test_labels <- to_categorical(test_labels)
+
+vectorize_sequences <- function(sequences, dimension = 10000) {
+  # Create an all-zero matrix of shape (len(sequences), dimension)
+  results <- matrix(0, nrow = length(sequences), ncol = dimension)
+  for (i in 1:length(sequences))
+    # Sets specific indices of results[i] to 1s
+    results[i, sequences[[i]]] <- 1
+  results
+}
+
+# Our vectorized training data
+x_train <- vectorize_sequences(train_data)
+# Our vectorized test data
+x_test <- vectorize_sequences(test_data)
+
+```
+
+### Implement a series of neural network models
+
+Implement a series of neural network models
+Initial test
+5 dense, fully-connected layers
+relu activation except for the last layer (use softmax)
+Initialize with 512 hidden units apiece (except for the last layer)
+Use rmsprop optimizer
+Use categorical crossentropy for loss function
+Track validation set accuracy during training process
+Train with batch_size = 512 and 200 epochs
+Plot the validation set accuracy and loss over the epochs
+Identify the epoch where the model's performance degrades based on the validation set
+
+```{r initial}
+
+
+# 5 dense, fully-connected layers
+# relu activation except for the last layer (use softmax)
+# Initialize with 512 hidden units apiece (except for the last layer)
+
+network_init <- keras_model_sequential() %>% 
+  layer_dense(units = 512, activation = "relu", input_shape = c(28 * 28)) %>% 
+  layer_dense(units = 512, activation = "relu") %>% 
+  layer_dense(units = 512, activation = "relu") %>% 
+  layer_dense(units = 512, activation = "relu") %>% 
+  layer_dense(units = 10, activation = "softmax")
+
+network_init %>% 
+  compile(
+    optimizer = "rmsprop",
+    loss = "categorical_crossentropy",
+    metrics = c("accuracy")
+  )
+
+history <- network_init %>% fit(
+  partial_x_train,
+  partial_y_train,
+  epochs = 200,
+  batch_size = 152,
+  validation_data = list(x_val, y_val)
+)
+
+str(history)
+plot(history)
+
+# metrics <- network %>% 
+  # evaluate(test_images, test_labels, verbose = 0)
+# metrics
+
+```
+
+
+
+### Implement dropout
+Implement layer dropout after each layer from model 1 (except the last)
+Use a dropout rate of 0.5
+Estimate the model, and graphically compare the validation loss across epochs to the initial model. How does this new model perform relative to the old model?
+
+
+### Weight regularization
+Reestimate the initial model with L1 weight regularization on each layer (except the final layer) with a 0.001 penalty for each weight coefficient
+Reestimate the initial model with L2 weight regularization on each layer (except the final layer) with a 0.001 penalty for each weight coefficient
+Plot the validation loss for the initial model vs. the dropout vs. the L1 regularized model vs. the L2 regularized model - which model appears to perform the best?
+
+
+### Final model
+Select the best model from the ones you have estimated so far - this should have the lowest validation loss score at any potential epoch
+Reestimate that model using all of the training data (no validation set) with the same batch size and the number of epochs necessary to achieve the lowest validation loss in the previous step
+Calcuate the test set loss and accuracy. How well does your model perform to the baseline from chapter 2.1 in the book?

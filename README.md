@@ -32,5 +32,7 @@ As assignments for the project are completed, please use the below links to acce
 PS2, Part 3   
 
 * **Problem Set 3**  
+[PS3, Part 1](ProblemSets/PS3/PS3_Part1.md)  
+[PS3, Part 2](ProblemSets/PS3/PS3_Part2.md) 
 
 * **Problem Set 4**  

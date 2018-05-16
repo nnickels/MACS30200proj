@@ -15,7 +15,7 @@ Load the MNIST dataset
 Preprocess the data by converting the data to a 2D tensor with individual values between 0 and 1
 Randomly split the training data into 50,000 training observations and 10,000 validation observations
 
-```{r load}
+```{r load, cache = TRUE}
 
 set.seed(1234)
 
@@ -64,20 +64,19 @@ x_test <- vectorize_sequences(test_data)
 
 ### Implement a series of neural network models
 
-Implement a series of neural network models
-Initial test
-5 dense, fully-connected layers
-relu activation except for the last layer (use softmax)
-Initialize with 512 hidden units apiece (except for the last layer)
-Use rmsprop optimizer
-Use categorical crossentropy for loss function
-Track validation set accuracy during training process
-Train with batch_size = 512 and 200 epochs
-Plot the validation set accuracy and loss over the epochs
-Identify the epoch where the model's performance degrades based on the validation set
+* Implement a series of neural network models
+* Initial test
+* 5 dense, fully-connected layers
+* relu activation except for the last layer (use softmax)
+* Initialize with 512 hidden units apiece (except for the last layer)
+* Use rmsprop optimizer
+* Use categorical crossentropy for loss function
+* Track validation set accuracy during training process
+* Train with batch_size = 512 and 200 epochs
+* Plot the validation set accuracy and loss over the epochs
+* Identify the epoch where the model's performance degrades based on the validation set
 
-```{r initial}
-
+```{r initial, cache = TRUE}
 
 # 5 dense, fully-connected layers
 # relu activation except for the last layer (use softmax)
@@ -97,7 +96,7 @@ network_init %>%
     metrics = c("accuracy")
   )
 
-history <- network_init %>% fit(
+history_network_init <- network_init %>% fit(
   partial_x_train,
   partial_y_train,
   epochs = 200,
@@ -115,20 +114,135 @@ plot(history)
 ```
 
 
-
 ### Implement dropout
-Implement layer dropout after each layer from model 1 (except the last)
-Use a dropout rate of 0.5
-Estimate the model, and graphically compare the validation loss across epochs to the initial model. How does this new model perform relative to the old model?
 
+* Implement layer dropout after each layer from model 1 (except the last)
+* Use a dropout rate of 0.5
+* Estimate the model, and graphically compare the validation loss across epochs to the initial model. How does this new model perform relative to the old model?
+
+```{r dropout, cache = TRUE}
+
+layer_dropout(rate = 0.5)
+
+network_dropout <- keras_model_sequential() %>% 
+  layer_dense(units = 512, activation = "relu", input_shape = c(28 * 28)) %>% 
+  layer_dropout(rate = 0.5) %>% 
+  layer_dense(units = 512, activation = "relu") %>% 
+  layer_dropout(rate = 0.5) %>% 
+  layer_dense(units = 512, activation = "relu") %>% 
+  layer_dropout(rate = 0.5) %>% 
+  layer_dense(units = 512, activation = "relu") %>% 
+  layer_dropout(rate = 0.5) %>% 
+  layer_dense(units = 10, activation = "softmax")
+
+network_dropout %>% 
+  compile(
+    optimizer = "rmsprop",
+    loss = "categorical_crossentropy",
+    metrics = c("accuracy")
+  )
+
+history_network_dropout <- network_dropout %>% fit(
+  partial_x_train,
+  partial_y_train,
+  epochs = 200,
+  batch_size = 152,
+  validation_data = list(x_val, y_val)
+)
+
+library(ggplot2)
+library(tidyr)
+
+plot_training_losses <- function(losses) {
+  loss_names <- names(losses)
+  losses <- as.data.frame(losses)
+  losses$epoch <- seq_len(nrow(losses))
+  losses %>% 
+    gather(model, loss, loss_names[[1]], loss_names[[2]]) %>% 
+    ggplot(aes(x = epoch, y = loss, colour = model)) +
+    geom_point()
+}
+
+plot_training_losses(losses = list(
+  network_init = history_network_init$metrics$val_loss,
+  network_dropout = history_network_dropout$metrics$val_loss
+))
+
+```
 
 ### Weight regularization
-Reestimate the initial model with L1 weight regularization on each layer (except the final layer) with a 0.001 penalty for each weight coefficient
-Reestimate the initial model with L2 weight regularization on each layer (except the final layer) with a 0.001 penalty for each weight coefficient
-Plot the validation loss for the initial model vs. the dropout vs. the L1 regularized model vs. the L2 regularized model - which model appears to perform the best?
+
+* Reestimate the initial model with L1 weight regularization on each layer (except the final layer) with a 0.001 penalty for each weight coefficient
+* Reestimate the initial model with L2 weight regularization on each layer (except the final layer) with a 0.001 penalty for each weight coefficient
+* Plot the validation loss for the initial model vs. the dropout vs. the L1 regularized model vs. the L2 regularized model - which model appears to perform the best?
+
+```{r weights, cache = TRUE}
+
+network_L1 <- keras_model_sequential() %>% 
+  layer_dense(units = 512, kernel_regularizer = regularizer_l1(0.001), activation = "relu", input_shape = c(28 * 28)) %>% 
+  layer_dense(units = 512, kernel_regularizer = regularizer_l1(0.001), activation = "relu") %>% 
+  layer_dense(units = 512, kernel_regularizer = regularizer_l1(0.001), activation = "relu") %>% 
+  layer_dense(units = 512, kernel_regularizer = regularizer_l1(0.001), activation = "relu") %>% 
+  layer_dense(units = 10, activation = "softmax")
+
+network_L1 %>% 
+  compile(
+    optimizer = "rmsprop",
+    loss = "categorical_crossentropy",
+    metrics = c("accuracy")
+  )
+
+history_network_L1 <- network_L1 %>% fit(
+  partial_x_train,
+  partial_y_train,
+  epochs = 200,
+  batch_size = 152,
+  validation_data = list(x_val, y_val)
+)
+
+network_L2 <- keras_model_sequential() %>% 
+  layer_dense(units = 512, kernel_regularizer = regularizer_l2(0.001), activation = "relu", input_shape = c(28 * 28)) %>% 
+  layer_dense(units = 512, kernel_regularizer = regularizer_l2(0.001), activation = "relu") %>% 
+  layer_dense(units = 512, kernel_regularizer = regularizer_l2(0.001), activation = "relu") %>% 
+  layer_dense(units = 512, kernel_regularizer = regularizer_l2(0.001), activation = "relu") %>% 
+  layer_dense(units = 10, activation = "softmax")
+
+network_L2 %>% 
+  compile(
+    optimizer = "rmsprop",
+    loss = "categorical_crossentropy",
+    metrics = c("accuracy")
+  )
+
+history_network_L2 <- network_L2 %>% fit(
+  partial_x_train,
+  partial_y_train,
+  epochs = 200,
+  batch_size = 152,
+  validation_data = list(x_val, y_val)
+)
+
+plot_training_losses(losses = list(
+  network_init = history_network_init$metrics$val_loss,
+  network_dropout = history_network_dropout$metrics$val_loss,
+  network_L1 = history_network_L1$metrics$val_loss,
+  network_L2 = history_network_L2$metrics$val_loss
+))
+
+```
 
 
 ### Final model
-Select the best model from the ones you have estimated so far - this should have the lowest validation loss score at any potential epoch
-Reestimate that model using all of the training data (no validation set) with the same batch size and the number of epochs necessary to achieve the lowest validation loss in the previous step
-Calcuate the test set loss and accuracy. How well does your model perform to the baseline from chapter 2.1 in the book?
+
+* Select the best model from the ones you have estimated so far - this should have the lowest validation loss score at any potential epoch
+* Reestimate that model using all of the training data (no validation set) with the same batch size and the number of epochs necessary to achieve the lowest validation loss in the previous step
+* Calcuate the test set loss and accuracy. How well does your model perform to the baseline from chapter 2.1 in the book?
+
+```{r final, cache = TRUE}
+
+metrics <- network %>% evaluate(test_images, test_labels, verbose = 0)
+metrics
+
+```
+
+The text book test set accuracy is 98.1%.

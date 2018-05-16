@@ -268,13 +268,19 @@ set.seed(1234)
 
 # Test the final chosen model
 
-network_dropout %>% 
-  fit(train_images, train_labels, epochs = 25, batch_size = 512)
+# network_dropout %>% 
+  # fit(train_images, train_labels, epochs = 25, batch_size = 512)
 
-results <- network_dropout %>% evaluate(test_images, test_labels)
+# results <- network_dropout %>% evaluate(test_images, test_labels)
 
-results
+# results
 
 ```
+$loss
+[1] 0.1708979
 
-The text book test set accuracy is 97.8%. The set accuracy here is  higher, at 98.21%. The text book test set loss is 7.5%, and the test set loss here is higher, at 17%. Therefore, our accuracy is improved, and our loss has not imrpoved compared to the text book. 
+$acc
+[1] 0.9844
+
+
+The text book test set accuracy is 97.8%. The set accuracy here is  higher, at 98.44%. The text book test set loss is 7.5%, and the test set loss here is higher, at 17%. Therefore, our accuracy is improved, and our loss has not imrpoved compared to the text book. 

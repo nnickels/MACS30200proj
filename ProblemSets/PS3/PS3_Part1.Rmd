@@ -1,7 +1,7 @@
 ---
 title: "PS3_Part1"
 author: "Nora Nickels"
-date: "5/13/2018"
+date: "5/16/2018"
 output: github_document
 ---
 
@@ -11,48 +11,46 @@ output: github_document
 
 ### Set Seed and Load the MNIST Dataset
 
-Load the MNIST dataset
-Preprocess the data by converting the data to a 2D tensor with individual values between 0 and 1
-Randomly split the training data into 50,000 training observations and 10,000 validation observations
+* Load the MNIST dataset
+* Preprocess the data by converting the data to a 2D tensor with individual values between 0 and 1
+* Randomly split the training data into 50,000 training observations and 10,000 validation observations
 
 ```{r load, cache = TRUE}
 
-set.seed(1234)
-
 library(keras)
+library(keras)
+# install_keras(tensorflow = "gpu")
+library(modelr)
+library(tidyverse)
+library(ggplot2)
+
+set.seed(1234)
 
 # Load the MNIST dataset
 
 mnist <- dataset_mnist()
-train_images <- mnist$train$x
-train_labels <- mnist$train$y
-test_images <- mnist$test$x
-test_labels <- mnist$test$y
-
-str(train_images)
-str(train_labels)
-str(test_images)
-str(test_labels)
 
 # Preprocess the data by converting the data to a 2D tensor with individual values between 0 and 1
 # Randomly split the training data into 50,000 training observations and 10,000 validation observations
 
-train_images <- array_reshape(train_images, c(60000, 28 * 28))
+train_images <- array_reshape(mnist$train$x, c(60000, 28 * 28))
 train_images <- train_images / 255
 
-test_images <- array_reshape(test_images, c(10000, 28 * 28))
+test_images <- array_reshape( mnist$test$x, c(10000, 28 * 28))
 test_images <- test_images / 255
 
-train_labels <- to_categorical(train_labels)
-test_labels <- to_categorical(test_labels)
+train_labels <- to_categorical(mnist$train$y)
+test_labels <- to_categorical(mnist$test$y)
 
-val_indices <- 1:10000
+# Split train and validation data
+split_train <- resample_partition(data.frame(train_images), 
+                            c(test = 0.16667, train = 1- 0.16667))
 
-x_val <- train_images[val_indices,]
-partial_x_train <- train_images[-val_indices,]
+x_val <- train_images[split_train$test$idx,]
+partial_x_train <- train_images[split_train$train$idx,]
 
-y_val <- train_labels[val_indices]
-partial_y_train <- train_labels[-val_indices]
+y_val <- train_labels[split_train$test$idx,]
+partial_y_train <- train_labels[split_train$train$idx,]
 
 ```
 
@@ -90,7 +88,7 @@ network_init %>%
     metrics = c("accuracy")
   )
 
-history <- network_init %>% fit(
+history_init <- network_init %>% fit(
   partial_x_train,
   partial_y_train,
   epochs = 200,
@@ -98,8 +96,13 @@ history <- network_init %>% fit(
   validation_data = list(x_val, y_val)
 )
 
+# Plot the validation set accuracy and loss over the epochs
+
+plot(history_init)
+
 ```
 
+* The epoch where the model's performance degrades based on the validation set is epoch 5 based on loss and epoch 50 based on accuracy.
 
 ### Implement dropout
 
@@ -108,6 +111,9 @@ history <- network_init %>% fit(
 * Estimate the model, and graphically compare the validation loss across epochs to the initial model. How does this new model perform relative to the old model?
 
 ```{r dropout, cache = TRUE}
+
+# Implement layer dropout after each layer from model 1 (except the last)
+# Use a dropout rate of 0.5
 
 layer_dropout(rate = 0.5)
 
@@ -129,14 +135,15 @@ network_dropout %>%
     metrics = c("accuracy")
   )
 
-history_network_dropout <- network_dropout %>%
-                        fit(train_images, 
-                             train_labels, 
-                             epochs = 200, 
-                             batch_size = 512)
+history_dropout <- network_dropout %>% fit(
+  partial_x_train,
+  partial_y_train,
+  epochs = 200,
+  batch_size = 512,
+  validation_data = list(x_val, y_val)
+)
 
-library(ggplot2)
-library(tidyr)
+# Function to compare validation losses across models.
 
 plot_training_losses <- function(losses) {
   loss_names <- names(losses)
@@ -148,12 +155,16 @@ plot_training_losses <- function(losses) {
     geom_point()
 }
 
+# Estimate the model, and graphically compare the validation loss across epochs to the initial model. How does this new model perform relative to the old model?
+
 plot_training_losses(losses = list(
-  network_init = history_network_init$metrics$val_loss,
-  network_dropout = history_network_dropout$metrics$val_loss
+  network_init = history_init$metrics$val_loss,
+  network_dropout = history_dropout$metrics$val_loss
 ))
 
 ```
+
+Based on this comparison, the dropout model performs better than the initial model (less loss). Its validation loss is less noisy than the initial model as well.
 
 ### Weight regularization
 
@@ -162,6 +173,8 @@ plot_training_losses(losses = list(
 * Plot the validation loss for the initial model vs. the dropout vs. the L1 regularized model vs. the L2 regularized model - which model appears to perform the best?
 
 ```{r weights, cache = TRUE}
+
+# Reestimate the initial model with L1 weight regularization on each layer (except the final layer) with a 0.001 penalty for each weight coefficient
 
 network_L1 <- keras_model_sequential() %>% 
   layer_dense(units = 512, kernel_regularizer = regularizer_l1(0.001), activation = "relu", input_shape = c(28 * 28)) %>% 
@@ -177,11 +190,15 @@ network_L1 %>%
     metrics = c("accuracy")
   )
 
-history_network_L1 <- network_L1 %>%
-                        fit(train_images, 
-                             train_labels, 
-                             epochs = 200, 
-                             batch_size = 512)
+history_network_L1 <- network_L1 %>% fit(
+  partial_x_train,
+  partial_y_train,
+  epochs = 200,
+  batch_size = 512,
+  validation_data = list(x_val, y_val)
+)
+
+# Reestimate the initial model with L2 weight regularization on each layer (except the final layer) with a 0.001 penalty for each weight coefficient
 
 network_L2 <- keras_model_sequential() %>% 
   layer_dense(units = 512, kernel_regularizer = regularizer_l2(0.001), activation = "relu", input_shape = c(28 * 28)) %>% 
@@ -197,21 +214,47 @@ network_L2 %>%
     metrics = c("accuracy")
   )
 
-history_network_L2 <- network_L2 %>%
-                        fit(train_images, 
-                             train_labels, 
-                             epochs = 200, 
-                             batch_size = 512)
+history_network_L2 <- network_L2 %>% fit(
+  partial_x_train,
+  partial_y_train,
+  epochs = 200,
+  batch_size = 512,
+  validation_data = list(x_val, y_val)
+)
 
-plot_training_losses(losses = list(
-  network_init = history_network_init$metrics$val_loss,
-  network_dropout = history_network_dropout$metrics$val_loss,
-  network_L1 = history_network_L1$metrics$val_loss,
-  network_L2 = history_network_L2$metrics$val_loss
-))
+# Plot the validation loss for the initial model vs. the dropout vs. the L1 regularized model vs. the L2 regularized model - which model appears to perform the best?
+
+compare_models <- data.frame(cbind(history_init$metrics$val_loss, 
+                                history_dropout$metrics$val_loss, 
+                                history_network_L1$metrics$val_loss, 
+                                history_network_L2$metrics$val_loss, 
+                                1:200)) %>%
+  rename("initial" = X1, "dropout" = X2,
+         "L1" = X3, "L2" = X4) %>%
+  gather(1:4, key = model, value = value)
+  
+ggplot(comparison_models, aes(X5, value, color = model)) +
+  geom_line(size = 1) +
+  geom_point(size = 0.3) +
+  theme_bw() +
+  labs(title = "Validation set loss comparison across all models",
+       subtitle = "Models: Initial, Dropout, L1 and L2",
+       x = "epoch",
+       y = "validation loss")
+
+compare_models %>%
+  filter(model != "L1") %>%
+  ggplot(aes(X5, value, color = model)) +
+  geom_line(size = 1) +
+  geom_point(size = 0.3) +
+  theme_bw() +
+  labs(title = "Validation set loss comparison across all models",
+       subtitle = "Models: Initial, Dropout, L1 and L2",
+       x = "epoch",
+       y = "validation loss")
 
 ```
-
+Based on the comparison of validation loss of all four models, the dropout model still appears to overall perform the best.
 
 ### Final model
 
@@ -221,9 +264,17 @@ plot_training_losses(losses = list(
 
 ```{r final, cache = TRUE}
 
-metrics <- network %>% evaluate(test_images, test_labels, verbose = 0)
-metrics
+set.seed(1234)
+
+# Test the final chosen model
+
+network_dropout %>% 
+  fit(train_images, train_labels, epochs = 25, batch_size = 512)
+
+results <- network_dropout %>% evaluate(test_images, test_labels)
+
+results
 
 ```
 
-The text book test set accuracy is 98.1%.
+The text book test set accuracy is 97.8%. The set accuracy here is  higher, at 98.21%. The text book test set loss is 7.5%, and the test set loss here is higher, at 17%. Therefore, our accuracy is improved, and our loss has not imrpoved compared to the text book. 

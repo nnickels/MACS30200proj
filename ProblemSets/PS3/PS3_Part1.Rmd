@@ -37,7 +37,7 @@ str(test_labels)
 # Preprocess the data by converting the data to a 2D tensor with individual values between 0 and 1
 # Randomly split the training data into 50,000 training observations and 10,000 validation observations
 
-train_images <- array_reshape(train_images, c(50000, 28 * 28))
+train_images <- array_reshape(train_images, c(60000, 28 * 28))
 train_images <- train_images / 255
 
 test_images <- array_reshape(test_images, c(10000, 28 * 28))
@@ -46,19 +46,13 @@ test_images <- test_images / 255
 train_labels <- to_categorical(train_labels)
 test_labels <- to_categorical(test_labels)
 
-vectorize_sequences <- function(sequences, dimension = 10000) {
-  # Create an all-zero matrix of shape (len(sequences), dimension)
-  results <- matrix(0, nrow = length(sequences), ncol = dimension)
-  for (i in 1:length(sequences))
-    # Sets specific indices of results[i] to 1s
-    results[i, sequences[[i]]] <- 1
-  results
-}
+val_indices <- 1:10000
 
-# Our vectorized training data
-x_train <- vectorize_sequences(train_data)
-# Our vectorized test data
-x_test <- vectorize_sequences(test_data)
+x_val <- train_images[val_indices,]
+partial_x_train <- train_images[-val_indices,]
+
+y_val <- train_labels[val_indices]
+partial_y_train <- train_labels[-val_indices]
 
 ```
 
@@ -96,20 +90,13 @@ network_init %>%
     metrics = c("accuracy")
   )
 
-history_network_init <- network_init %>% fit(
+history <- network_init %>% fit(
   partial_x_train,
   partial_y_train,
   epochs = 200,
-  batch_size = 152,
+  batch_size = 512,
   validation_data = list(x_val, y_val)
 )
-
-str(history)
-plot(history)
-
-# metrics <- network %>% 
-  # evaluate(test_images, test_labels, verbose = 0)
-# metrics
 
 ```
 
@@ -142,13 +129,11 @@ network_dropout %>%
     metrics = c("accuracy")
   )
 
-history_network_dropout <- network_dropout %>% fit(
-  partial_x_train,
-  partial_y_train,
-  epochs = 200,
-  batch_size = 152,
-  validation_data = list(x_val, y_val)
-)
+history_network_dropout <- network_dropout %>%
+                        fit(train_images, 
+                             train_labels, 
+                             epochs = 200, 
+                             batch_size = 512)
 
 library(ggplot2)
 library(tidyr)
@@ -192,13 +177,11 @@ network_L1 %>%
     metrics = c("accuracy")
   )
 
-history_network_L1 <- network_L1 %>% fit(
-  partial_x_train,
-  partial_y_train,
-  epochs = 200,
-  batch_size = 152,
-  validation_data = list(x_val, y_val)
-)
+history_network_L1 <- network_L1 %>%
+                        fit(train_images, 
+                             train_labels, 
+                             epochs = 200, 
+                             batch_size = 512)
 
 network_L2 <- keras_model_sequential() %>% 
   layer_dense(units = 512, kernel_regularizer = regularizer_l2(0.001), activation = "relu", input_shape = c(28 * 28)) %>% 
@@ -214,13 +197,11 @@ network_L2 %>%
     metrics = c("accuracy")
   )
 
-history_network_L2 <- network_L2 %>% fit(
-  partial_x_train,
-  partial_y_train,
-  epochs = 200,
-  batch_size = 152,
-  validation_data = list(x_val, y_val)
-)
+history_network_L2 <- network_L2 %>%
+                        fit(train_images, 
+                             train_labels, 
+                             epochs = 200, 
+                             batch_size = 512)
 
 plot_training_losses(losses = list(
   network_init = history_network_init$metrics$val_loss,

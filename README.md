@@ -35,4 +35,5 @@ PS2, Part 3
 [PS3, Part 1](ProblemSets/PS3/PS3_Part1.md)  
 [PS3, Part 2](ProblemSets/PS3/PS3_Part2.md) 
 
-* **Problem Set 4**  
+* **Problem Set 4** 
+[PS4](ProblemSets/PS4/PS4.ipynb)  

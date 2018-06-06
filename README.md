@@ -19,7 +19,8 @@ As assignments for the project are completed, please use the below links to acce
 ### Poster  
 * [Poster](Poster/MACSS_POCR_Poster_Spr_2018.pdf)  
 
-### Final Paper
+### Final Paper  
+* [Final Paper](FinalPaper/Nickels_Final_Paper_POCR.pdf)  
 
 ### Problem Sets
 
